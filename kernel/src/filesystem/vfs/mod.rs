@@ -1,7 +1,9 @@
 #![allow(dead_code)]
 
 pub mod core;
+pub mod fcntl;
 pub mod file;
+pub mod io;
 pub mod mount;
 pub mod syscall;
 mod utils;
@@ -161,6 +163,9 @@ pub trait IndexNode: Any + Sync + Send + Debug {
     }
 
     /// @brief 重新设置文件的大小
+    ///
+    /// 如果文件大小增加，则文件内容不变，但是文件的空洞部分会被填充为0
+    /// 如果文件大小减小，则文件内容会被截断
     ///
     /// @return 成功：Ok()
     ///         失败：Err(错误码)

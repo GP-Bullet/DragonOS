@@ -168,7 +168,7 @@ fn migrate_virtual_filesystem(new_fs: Arc<dyn FileSystem>) -> Result<(), SystemE
 #[no_mangle]
 pub extern "C" fn mount_root_fs() -> i32 {
     kinfo!("Try to mount FAT32 as root fs...");
-    let partiton: Arc<crate::io::disk_info::Partition> =
+    let partiton: Arc<crate::filesystem::vfs::io::disk_info::Partition> =
         ahci::get_disks_by_name("ahci_disk_0".to_string())
             .unwrap()
             .0
@@ -228,7 +228,7 @@ pub fn do_mkdir(path: &str, _mode: FileMode) -> Result<u64, SystemError> {
     return Ok(0);
 }
 
-/// @breif 删除文件夹
+/// @brief 删除文件夹
 pub fn do_remove_dir(path: &str) -> Result<u64, SystemError> {
     // 文件名过长
     if path.len() > PAGE_4K_SIZE as usize {

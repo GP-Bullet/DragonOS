@@ -23,11 +23,11 @@ use self::{
 
 pub mod allocator;
 pub mod c_adapter;
-pub mod gfp;
 pub mod kernel_mapper;
 pub mod mmio_buddy;
 pub mod no_init;
 pub mod page;
+pub mod percpu;
 pub mod syscall;
 pub mod ucontext;
 
@@ -149,6 +149,20 @@ impl core::ops::AddAssign<PhysAddr> for PhysAddr {
     #[inline(always)]
     fn add_assign(&mut self, rhs: PhysAddr) {
         self.0 += rhs.0;
+    }
+}
+
+impl core::ops::BitOrAssign<usize> for PhysAddr {
+    #[inline(always)]
+    fn bitor_assign(&mut self, rhs: usize) {
+        self.0 |= rhs;
+    }
+}
+
+impl core::ops::BitOrAssign<PhysAddr> for PhysAddr {
+    #[inline(always)]
+    fn bitor_assign(&mut self, rhs: PhysAddr) {
+        self.0 |= rhs.0;
     }
 }
 
